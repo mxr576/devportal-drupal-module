@@ -6,9 +6,9 @@ set -e
 # Register shared variables.
 export THREADS=${THREADS:-4}
 export MODULE_PATH="/opt/drupal-module"
-export WEB_ROOT="/var/www/html/build"
+export WEB_ROOT="/var/www/html/web"
 export WEB_ROOT_PARENT="/var/www/html"
-export TEST_ROOT=${TEST_ROOT:-modules/custom}
+export TEST_ROOT=${TEST_ROOT:-modules/drupal-module/tests}
 export TESTRUNNER="/var/www/html/testrunner"
 
 if [[ ! -f ${TESTRUNNER} ]]; then

@@ -3,9 +3,8 @@
 1. Set the required environment variables. (For example, with the `export` command.)
 
 #### Required environment variables
-* `DRUPAL_MODULE_NAME=devportal`
 * `TEST_ROOT="RELATIVE_PATH_TO_MODULE_TEST_DIR"`, ex.:
-  `modules/contrib/${DRUPAL_MODULE_NAME}/modules/api_reference/tests`
+  `modules/drupal-module/modules/api_reference/tests`
 
 #### Optional environment variables**
 * `DEPENDENCIES="--prefer-lowest"` # Install lowest versions from dependencies (default: highest)
@@ -19,8 +18,8 @@
 
 4. Run tests in the container
 ```sh
-docker-compose run php /opt/drupal-module/.travis/run-test.sh # to run all tests from TEST_ROOT
-docker-compose run php /opt/drupal-module/.travis/run-test.sh modules/contrib/${DRUPAL_MODULE_NAME}/modules/api_reference/tests/src/FunctionalJavascript/OpenApiUploadTest.php # to run one specific test
+docker-compose run php /opt/drupal-module/.travis/run-test.sh # to run all tests from the tested module
+docker-compose run php /opt/drupal-module/.travis/run-test.sh modules/drupal-module/modules/api_reference/tests/src/FunctionalJavascript/OpenApiUploadTest.php # to run one specific test
 ```
 
 **IMPORTANT: If you make changes on the tested code you have to repeat this process starting with step 1 (if you would

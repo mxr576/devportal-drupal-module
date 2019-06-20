@@ -15,11 +15,7 @@ services:
       POSTGRES_USER: ${DB_USER:-drupal}
 
   php:
-    build:
-      context: ..
-      dockerfile: .travis/Dockerfile
-      args:
-        - PHP_IMAGE=${PHP_IMAGE:-wodby/drupal-php:7.1-dev}
+    image: ${DB_IMAGE:-wodby/drupal-php:7.1-dev}
     container_name: "${COMPOSE_PROJECT_NAME:-my_project}_php"
     environment:
       COLUMNS: 80
@@ -34,6 +30,7 @@ services:
       BROWSERTEST_OUTPUT_DIRECTORY: "/mnt/files/log/simpletest"
       COMPOSER_AUTH: ${COMPOSER_AUTH:-}
     volumes:
+      - ..:/opt/drupal-module
       - codebase:/var/www/html
       - $HOME/.composer/cache/files:/home/wodby/.composer/cache/files
 
@@ -43,13 +40,13 @@ services:
     depends_on:
       - php
     environment:
-      APACHE_LOG_LEVEL: debug
       APACHE_BACKEND_HOST: php
-      APACHE_SERVER_ROOT: /var/www/html/build
+      APACHE_SERVER_ROOT: ${WEB_ROOT:-/var/www/html/web}
       NGINX_STATIC_CONTENT_OPEN_FILE_CACHE: "off"
-      NGINX_ERROR_LOG_LEVEL: debug
       NGINX_BACKEND_HOST: php
-      NGINX_SERVER_ROOT: /var/www/html/build
+      NGINX_VHOST_PRESET: drupal8
+      NGINX_SERVER_ROOT: ${WEB_ROOT:-/var/www/html/web}
+      NGINX_STATIC_404_TRY_INDEX: 1
     volumes:
       - codebase:/var/www/html
 
