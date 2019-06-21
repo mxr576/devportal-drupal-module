@@ -24,13 +24,19 @@ env:
     - DOCKER_COMPOSE_VERSION=1.24.0
     - THREADS=4
   matrix:
-    - CHECK_CS=true
+#    - CHECK_CS=true
     # Run API Reference sub-module tests.
     - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests"
+    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" INSTALL_COMPOSER_VERSION="1.6.5"
+    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" INSTALL_COMPOSER_VERSION="1.7.0"
+    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" INSTALL_COMPOSER_VERSION="1.8.0"
     - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" DEPENDENCIES="--prefer-lowest"
-    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" DB_DRIVER=pgsql DB_IMAGE=wodby/postgres:9.6
-    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" PHP_IMAGE=wodby/drupal-php:7.2-dev-4.5.0
-    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" DRUPAL_CORE=8.7.x-dev DEPENDENCIES="--prefer-lowest"
+    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" DEPENDENCIES="--prefer-lowest" INSTALL_COMPOSER_VERSION="1.6.5"
+    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" DEPENDENCIES="--prefer-lowest" INSTALL_COMPOSER_VERSION="1.7.0"
+    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" DEPENDENCIES="--prefer-lowest" INSTALL_COMPOSER_VERSION="1.8.0"
+#    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" DB_DRIVER=pgsql DB_IMAGE=wodby/postgres:9.6
+#    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" PHP_IMAGE=wodby/drupal-php:7.2-dev-4.5.0
+#    - TEST_ROOT="modules/contrib/drupal-module/modules/api_reference/tests" DRUPAL_CORE=8.7.x-dev DEPENDENCIES="--prefer-lowest"
 
 matrix:
   allow_failures:
@@ -44,6 +50,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - cd .travis && chmod u+x *.sh
+  - docker-compose pull
   - docker-compose up -d --build
   - docker-compose ps
   - docker-compose run --rm php /opt/drupal-module/.travis/prepare-test-env.sh
@@ -56,7 +63,7 @@ script:
   # Do not exist if a PHPUnit test fails, we would like to run all scripts from
   # after_* sections.
   - set +e
-  - docker-compose run --rm php /opt/drupal-module/.travis/run-test.sh
+#  - docker-compose run --rm php /opt/drupal-module/.travis/run-test.sh
 
 after_failure:
   # Push log file and browser output to an our logs repository.

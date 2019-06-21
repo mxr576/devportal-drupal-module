@@ -16,6 +16,7 @@ services:
       SYMFONY_DEPRECATIONS_HELPER: ${SYMFONY_DEPRECATIONS_HELPER:-disabled}
       THREADS: ${THREADS:-2}
       TEST_ROOT: ${TEST_ROOT:-}
+      INSTALL_COMPOSER_VERSION: ${INSTALL_COMPOSER_VERSION:-}
       # We have to set this variable even if we set this to disabled, because
       # otherwise xDebug does not get enabled and we need that for code coverage
       # generation.

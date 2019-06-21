@@ -21,6 +21,14 @@ sudo -u root sh -c "chown -R wodby:wodby /opt/drupal-module"
 
 cd ${MODULE_PATH}/.travis
 
+if [[ -n "${INSTALL_COMPOSER_VERSION}" ]]; then
+  wget https://github.com/composer/composer/releases/download/${INSTALL_COMPOSER_VERSION}/composer.phar -O /tmp/composer \
+  && chmod u+x /tmp/composer \
+  && sudo -u root mv /tmp/composer /usr/local/bin/composer
+fi
+
+composer --version
+
 # Install module with the highest dependencies first.
 composer update -vvv --profile ${COMPOSER_GLOBAL_OPTIONS}
 
@@ -33,6 +41,8 @@ fi
 if [[ -n "${DEPENDENCIES}" ]]; then
   composer update ${COMPOSER_GLOBAL_OPTIONS} ${DEPENDENCIES} --with-dependencies
 fi
+
+rm -f composer.lock
 
 cp settings.testing.php ${WEB_ROOT}/sites/default
 
